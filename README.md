@@ -2,8 +2,8 @@
 
 **Like [btop](https://github.com/aristocratos/btop), but for your AI coding agents.**
 
-See every Claude Code, Codex CLI, and OpenCode session at a glance — token usage, context window %, rate limits, child processes, open ports, and more.
-Claude Code, Codex CLI, and OpenCode sessions are discovered from local process/file state, so multiple active profiles are supported across macOS, Linux, and Windows.
+See every Claude Code, Codex CLI, OpenCode, OMP, and Pi session at a glance — token usage, context window %, rate limits, child processes, open ports, and more.
+Claude Code, Codex CLI, OpenCode, OMP, and Pi sessions are discovered from local process/file state, so multiple active profiles are supported across macOS, Linux, and Windows.
 
 ![demo](https://raw.githubusercontent.com/graykode/abtop/main/assets/demo.gif)
 
@@ -11,13 +11,14 @@ Claude Code, Codex CLI, and OpenCode sessions are discovered from local process/
 
 This is the [`raphberube/abtop`](https://github.com/raphberube/abtop) fork (`remix` branch). On top of upstream it adds:
 
-- **Agents pane** (`0`, scope `g`): a 15-minute chart of concurrent Claude Code and Codex agents, subagents included.
+- **OMP and Pi sessions**: discovered alongside Claude Code, Codex CLI, and OpenCode, with tokens, context, current task, subagents, and `◐ Bg`.
+- **Agents pane** (`0`, scope `g`): a 15-minute chart of concurrent Claude Code, Codex, OMP, and Pi agents, subagents included.
 - **Token rate** (`9`) and **Context** (`1`) as two independent top-row panes.
 - **Cache-read chart and Reuse %** (`C`): cache reads/min under Token rate, with the share of input-side tokens served from cache.
 - **Models pane** (`8`): per-model lifetime totals, share, and tokens/min.
 - **Per-category rates** in Tokens: Input, Output, CacheR, and CacheW each show tokens/min.
 - **Selected / All live scope** (`a`): Tokens and Models switch between the selected session and every live session.
-- **`◐ Bg` status**: a Claude session whose turn ended while a workflow or background agent keeps working no longer looks like it is waiting on you.
+- **`◐ Bg` status**: a Claude, OMP, or Pi session whose turn ended while a workflow or background agent keeps working no longer looks like it is waiting on you.
 - **Progressive startup**: sessions appear one by one as they are parsed instead of after the full scan.
 - **Token totals exclude cache reads**: totals count input + output + cache writes, and nested Claude subagents and workflow agents are included.
 
@@ -108,20 +109,20 @@ tmux new -s work
 
 ## Supported Agents
 
-| Feature           | Claude Code | Codex CLI | OpenCode |
-| ----------------- | :---------: | :-------: | :------: |
-| Session Discovery |     ✅      |    ✅     |    ✅    |
-| Token Tracking    |     ✅      |    ✅     |    ✅    |
-| Context Window %  |     ✅      |    ✅     |    ❌    |
-| Status Detection  |     ✅      |    ✅     |    ✅    |
-| Current Task      |     ✅      |    ✅     |    ❌    |
-| Rate Limit        |     ✅      |    ✅     |    ❌    |
-| Git Status        |     ✅      |    ✅     |    ✅    |
-| Children / Ports  |     ✅      |    ✅     |    ✅    |
-| Subagents         |     ✅      |    ❌     |    ❌    |
-| Memory Status     |     ✅      |    ❌     |    ❌    |
-| Agents Pane       |     ✅      |    ✅     |    ❌    |
-| Background Status |     ✅      |    ❌     |    ❌    |
+| Feature           | Claude Code | Codex CLI | OpenCode | OMP | Pi |
+| ----------------- | :---------: | :-------: | :------: | :-: | :-: |
+| Session Discovery |     ✅      |    ✅     |    ✅    | ✅  | ✅  |
+| Token Tracking    |     ✅      |    ✅     |    ✅    | ✅  | ✅  |
+| Context Window %  |     ✅      |    ✅     |    ❌    | ✅  | ✅  |
+| Status Detection  |     ✅      |    ✅     |    ✅    | ✅  | ✅  |
+| Current Task      |     ✅      |    ✅     |    ❌    | ✅  | ✅  |
+| Rate Limit        |     ✅      |    ✅     |    ❌    | ❌  | ❌  |
+| Git Status        |     ✅      |    ✅     |    ✅    | ✅  | ✅  |
+| Children / Ports  |     ✅      |    ✅     |    ✅    | ✅  | ✅  |
+| Subagents         |     ✅      |    ❌     |    ❌    | ✅  | ✅  |
+| Memory Status     |     ✅      |    ❌     |    ❌    | ❌  | ❌  |
+| Agents Pane       |     ✅      |    ✅     |    ❌    | ✅  | ✅  |
+| Background Status |     ✅      |    ❌     |    ❌    | ✅  | ✅  |
 
 OpenCode support reads the local SQLite database at `~/.local/share/opencode/opencode.db` (also the default location on Windows; `%LOCALAPPDATA%\opencode` and `%APPDATA%\opencode` are probed as fallbacks) and requires `sqlite3` in `PATH` (on Windows: `winget install SQLite.SQLite`).
 
