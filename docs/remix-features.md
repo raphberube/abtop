@@ -109,9 +109,9 @@ The desktop layout reserves minimum widths for enabled panes and switches to tab
 
 ![Narrow Usage tab](../assets/remix/narrow-usage.png)
 
-Hidden panes free their width for the rest of the row. Here Quota (`2`) and Ports (`5`) are off:
+Hidden panes free their width for the rest of the row. Here Quota (`2`) and Ports (`5`) are off, the cache-read chart (`C`) is on, and Tokens and Models use the All live scope (`a`):
 
-![Quota and Ports hidden](../assets/remix/focused.png)
+![Quota and Ports hidden, cache-read chart on, All live scope](../assets/remix/focused.png)
 
 ## JSON snapshots and library API
 

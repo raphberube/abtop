@@ -57,5 +57,5 @@ capture() {
 capture overview 180 52 C
 capture all-live 180 52 a
 capture narrow-usage 100 44 u
-# 2 hides Quota, 5 hides Ports.
-capture focused 180 52 2 5
+# 2 hides Quota, 5 hides Ports; C adds the cache chart, a selects All live.
+capture focused 180 52 2 5 C a

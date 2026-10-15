@@ -29,9 +29,9 @@ Details for each feature: [docs/remix-features.md](docs/remix-features.md).
 |:-:|:-:|
 | ![Tokens and Models summed across all live sessions](assets/remix/all-live.png) | ![Narrow Usage tab](assets/remix/narrow-usage.png) |
 
-Hiding panes you don't need gives the rest more room. With Quota (`2`) and Ports (`5`) off, Tokens and Models widen:
+Hiding panes you don't need gives the rest more room. With Quota (`2`) and Ports (`5`) off, Tokens and Models widen; here they also use the All live scope (`a`), with the cache-read chart (`C`) on:
 
-![Quota and Ports hidden: Tokens and Models use the freed width](assets/remix/focused.png)
+![Quota and Ports hidden, cache-read chart on, All live scope: Tokens and Models use the freed width](assets/remix/focused.png)
 
 ## Why
 
