@@ -793,7 +793,7 @@ fn narrow_section_areas(app: &App, tab: NarrowTab, area: Rect) -> Vec<(NarrowSec
     }
 
     if tab == NarrowTab::Usage {
-        return usage_section_areas(&sections, area);
+        return usage_section_areas(&sections, app.show_cache_read_rate, area);
     }
 
     let constraints = if tab == NarrowTab::Work && sections.contains(&NarrowSection::Agents) {
@@ -836,9 +836,14 @@ fn narrow_section_areas(app: &App, tab: NarrowTab, area: Rect) -> Vec<(NarrowSec
 }
 
 /// Usage tab: the graphs share one band, which yields only when the stats
-/// panes' floors leave no room for it. Squeezed stats panes then take their
-/// full minimum back before spare rows are shared evenly.
-fn usage_section_areas(sections: &[NarrowSection], area: Rect) -> Vec<(NarrowSection, Rect)> {
+/// panes' floors leave no room for it. Rows above the floors then go, in order,
+/// to Quota's summary, the second Models row, and the cache chart's sixth band
+/// row, before spare rows are shared evenly.
+fn usage_section_areas(
+    sections: &[NarrowSection],
+    cache_chart: bool,
+    area: Rect,
+) -> Vec<(NarrowSection, Rect)> {
     const GRAPH_BAND_MIN: u16 = 5;
     let has = |section| sections.contains(&section);
     let graphs = has(NarrowSection::TokenRate) || has(NarrowSection::Context);
@@ -866,17 +871,27 @@ fn usage_section_areas(sections: &[NarrowSection], area: Rect) -> Vec<(NarrowSec
     } else {
         0
     };
-    let stats_full = stats.iter().copied().map(full).sum::<u16>();
-    let squeezed = band + stats_full > area.height;
+    // Matches the desktop top row's ideal minimum with the cache chart on.
+    let band_full = if band > 0 && cache_chart && has(NarrowSection::TokenRate) {
+        6
+    } else {
+        band
+    };
 
+    let offset = usize::from(band > 0);
     let mut minima: Vec<u16> = (band > 0).then_some(band).into_iter().collect();
-    minima.extend(stats.iter().map(|&section| {
-        if squeezed {
-            floor(section)
-        } else {
-            full(section)
-        }
-    }));
+    minima.extend(stats.iter().copied().map(floor));
+    let mut spare = area.height.saturating_sub(minima.iter().sum());
+    let growth = stats
+        .iter()
+        .enumerate()
+        .map(|(i, &section)| (offset + i, full(section) - floor(section)))
+        .chain((band > 0).then_some((0, band_full - band)));
+    for (index, rows) in growth {
+        let rows = rows.min(spare);
+        minima[index] += rows;
+        spare -= rows;
+    }
     let rows = Layout::vertical(minimum_constraints(&minima, area.height)).split(area);
     let mut rows = rows.iter().copied();
 
@@ -2008,13 +2023,14 @@ mod tests {
         for height in [24, 27, 30, 40] {
             let area = Rect::new(0, 0, 80, height);
             let body = narrow_chunks(area)[1];
-            app.show_cache_read_rate = false;
-            let without_cache = narrow_section_areas(&app, NarrowTab::Usage, body);
-            app.show_cache_read_rate = true;
-            assert_eq!(
-                narrow_section_areas(&app, NarrowTab::Usage, body),
-                without_cache
-            );
+            // The band grows to six rows once the stats panes are full (26 rows).
+            let sections = narrow_section_areas(&app, NarrowTab::Usage, body);
+            let rate = sections
+                .iter()
+                .find(|(s, _)| *s == NarrowSection::TokenRate)
+                .unwrap()
+                .1;
+            assert_eq!(rate.height >= 6, height >= 26, "{height} rows");
             sync_narrow_section(&mut app, area);
             app.toggle_narrow_section_zoom(NarrowSection::TokenRate);
             let mut terminal = Terminal::new(TestBackend::new(80, height)).unwrap();
@@ -2171,6 +2187,36 @@ mod tests {
             .draw(|f| token_rate::draw_token_rate_panel_active(f, &app, area, &app.theme, false))
             .unwrap();
         assert!(area_text(terminal.backend().buffer(), area).contains("0/min"));
+    }
+
+    #[test]
+    fn usage_rows_above_floors_restore_stats_before_the_band_grows() {
+        let mut app = App::new_with_config(Theme::default(), &[], PanelVisibility::default());
+        crate::demo::populate_demo(&mut app);
+        app.set_narrow_tab(NarrowTab::Usage);
+        let heights = |app: &App, rows| {
+            let area = Rect::new(0, 0, 80, rows);
+            let sections = narrow_section_areas(app, NarrowTab::Usage, narrow_chunks(area)[1]);
+            let height = |kind| sections.iter().find(|(s, _)| *s == kind).unwrap().1.height;
+            (
+                height(NarrowSection::TokenRate),
+                height(NarrowSection::Context),
+                height(NarrowSection::Quota),
+                height(NarrowSection::Tokens),
+                height(NarrowSection::Models),
+            )
+        };
+        // Floors: band 5, Quota 5, Tokens 7, Models 3, plus header, tabs, and footer.
+        assert_eq!(heights(&app, 23), (5, 5, 5, 7, 3));
+        assert_eq!(heights(&app, 24), (5, 5, 6, 7, 3));
+        assert_eq!(heights(&app, 25), (5, 5, 6, 7, 4));
+        assert_eq!(heights(&app, 27), (6, 6, 7, 7, 4));
+
+        // The cache chart's sixth row comes after the stats panes' full height.
+        app.show_cache_read_rate = true;
+        assert_eq!(heights(&app, 25), (5, 5, 6, 7, 4));
+        assert_eq!(heights(&app, 26), (6, 6, 6, 7, 4));
+        assert_eq!(heights(&app, 27), (7, 7, 6, 7, 4));
     }
 
     #[test]

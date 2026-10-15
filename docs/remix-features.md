@@ -105,7 +105,7 @@ arrives.
 
 ## Responsive layout
 
-The desktop layout reserves minimum widths for enabled panes and switches to tabs when they cannot fit (134 columns with all panes enabled). In the Usage tab, Token rate and Context share one row; when height is limited, Quota drops its summary and Models shows one entry before that row is hidden (below 23 rows), always preserving both quota windows and all four token categories. Quota bars shrink before values are clipped, reset countdowns move inline in shorter panes, and Models combines overflow when needed. These automatic layout changes do not alter saved visibility settings.
+The desktop layout reserves minimum widths for enabled panes and switches to tabs when they cannot fit (134 columns with all panes enabled). In the Usage tab, Token rate and Context share one row; when height is limited, Models shows one entry and then Quota drops its summary before that row is hidden (below 23 rows), always preserving both quota windows and all four token categories. Quota bars shrink before values are clipped, reset countdowns move inline in shorter panes, and Models combines overflow when needed. These automatic layout changes do not alter saved visibility settings.
 
 ![Narrow Usage tab](../assets/remix/narrow-usage.png)
 
