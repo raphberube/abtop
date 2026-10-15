@@ -29,6 +29,10 @@ Details for each feature: [docs/remix-features.md](docs/remix-features.md).
 |:-:|:-:|
 | ![Cache-read chart with Reuse %, Tokens and Models in All live scope](assets/remix/cache-all-live.png) | ![Narrow Usage tab](assets/remix/narrow-usage.png) |
 
+Hiding panes you don't need gives the rest more room. With Quota (`2`) and Ports (`5`) off, Tokens and Models widen:
+
+![Quota and Ports hidden: Tokens and Models use the freed width](assets/remix/focused.png)
+
 ## Why
 
 - Running 3+ agents across projects? See them all in one screen.

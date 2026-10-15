@@ -109,6 +109,10 @@ The desktop layout reserves minimum widths for enabled panes and switches to tab
 
 ![Narrow Usage tab](../assets/remix/narrow-usage.png)
 
+Hidden panes free their width for the rest of the row. Here Quota (`2`) and Ports (`5`) are off:
+
+![Quota and Ports hidden](../assets/remix/focused.png)
+
 ## JSON snapshots and library API
 
 For library consumers,

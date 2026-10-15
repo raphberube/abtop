@@ -20,7 +20,7 @@ work="$(mktemp -d)"
 trap 'tmux -L "$socket" kill-server 2>/dev/null || true; rm -rf "$work"' EXIT
 
 cargo build --release --manifest-path "$root/Cargo.toml" --quiet
-mkdir -p "$out" "$work/home"
+mkdir -p "$out"
 cat >"$work/tmux.conf" <<'EOF'
 set -g default-terminal "tmux-256color"
 set -g terminal-features "*:RGB"
@@ -31,8 +31,11 @@ EOF
 capture() {
   local name="$1" cols="$2" rows="$3"
   shift 3
+  # Keys like C, a, and panel toggles are saved to config: isolate each capture.
+  local home="$work/home-$name"
+  mkdir -p "$home"
   tmux -L "$socket" -f "$work/tmux.conf" new-session -d -s shot -x "$cols" -y "$rows" \
-    env HOME="$work/home" XDG_CONFIG_HOME="$work/home/.config" LANG=en_US.UTF-8 \
+    env HOME="$home" XDG_CONFIG_HOME="$home/.config" LANG=en_US.UTF-8 \
     COLORTERM=truecolor "$root/target/release/abtop" --demo
   # Let the demo replay a few refreshes so rates and charts move.
   sleep 5
@@ -54,3 +57,5 @@ capture() {
 capture overview 180 52
 capture cache-all-live 180 52 C a
 capture narrow-usage 100 44 u
+# 2 hides Quota, 5 hides Ports.
+capture focused 180 52 2 5
