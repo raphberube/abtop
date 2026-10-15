@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.5-remix.2](https://github.com/raphberube/abtop/compare/v0.5.5-remix.1...v0.5.5-remix.2) (2026-10-15)
+
+
+### Bug Fixes
+
+* **ui:** keep token rate and context graphs until pane floors fill the height ([#5](https://github.com/raphberube/abtop/issues/5)) ([fecba35](https://github.com/raphberube/abtop/commit/fecba350f4e8cd60d3a18c8d49ad3ff6edce9454))
+
 ## [0.5.5-remix.1](https://github.com/raphberube/abtop/compare/v0.5.5-remix.0...v0.5.5-remix.1) (2026-10-15)
 
 
