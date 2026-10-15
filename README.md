@@ -23,11 +23,11 @@ This is the [`raphberube/abtop`](https://github.com/raphberube/abtop) fork (`rem
 
 Details for each feature: [docs/remix-features.md](docs/remix-features.md).
 
-![Overview: Token rate, Context, Tokens and Models rates, Agents pane, and a Bg session](assets/remix/overview.png)
+![Overview: Token rate with the cache-read chart, Context, Tokens and Models rates, Agents pane, and a Bg session](assets/remix/overview.png)
 
-| Cache-read chart and All live scope (`C`, `a`) | Narrow terminal, Usage tab (`u`) |
+| All live scope (`a`) | Narrow terminal, Usage tab (`u`) |
 |:-:|:-:|
-| ![Cache-read chart with Reuse %, Tokens and Models in All live scope](assets/remix/cache-all-live.png) | ![Narrow Usage tab](assets/remix/narrow-usage.png) |
+| ![Tokens and Models summed across all live sessions](assets/remix/all-live.png) | ![Narrow Usage tab](assets/remix/narrow-usage.png) |
 
 Hiding panes you don't need gives the rest more room. With Quota (`2`) and Ports (`5`) off, Tokens and Models widen:
 

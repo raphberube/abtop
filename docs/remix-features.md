@@ -19,7 +19,7 @@ Every screenshot comes from `abtop --demo` and is regenerated with
 | Progressive startup | — | — | [Startup](#progressive-startup) |
 | Totals exclude cache reads | — | — | [Token accounting](#token-accounting) |
 
-![abtop remix overview](../assets/remix/overview.png)
+![abtop remix overview, with the cache-read chart enabled](../assets/remix/overview.png)
 
 ## Token accounting
 
@@ -59,7 +59,7 @@ All live adds the lifetime usage of all confirmed live sessions from enabled col
 
 Aggregate model shares use the combined token total, and average tokens per turn is the combined total divided by the combined turn count. The aggregate Tokens sparkline shows combined rolling `tokens/min`, excluding cache reads, sampled on each refresh for the sessions live at that time (up to 200 samples). History is collected even in Selected mode; discovering a session does not turn its past usage into a rate spike. Existing collector accounting is preserved: Claude session totals already include tracked subagents, while Codex and OpenCode totals cover each session itself.
 
-![Cache-read chart and All live scope](../assets/remix/cache-all-live.png)
+![All live scope](../assets/remix/all-live.png)
 
 ## Token rate and Context panes
 

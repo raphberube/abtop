@@ -54,8 +54,8 @@ capture() {
   echo "wrote assets/remix/$name.png"
 }
 
-capture overview 180 52
-capture cache-all-live 180 52 C a
+capture overview 180 52 C
+capture all-live 180 52 a
 capture narrow-usage 100 44 u
 # 2 hides Quota, 5 hides Ports.
 capture focused 180 52 2 5
